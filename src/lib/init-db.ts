@@ -38,6 +38,7 @@ export async function initializeDatabase() {
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         seller_id UUID REFERENCES users(id) ON DELETE CASCADE,
         total_amount DECIMAL(16, 4) NOT NULL,
+        delivery_address TEXT,
         status VARCHAR(50) DEFAULT 'PENDING',
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

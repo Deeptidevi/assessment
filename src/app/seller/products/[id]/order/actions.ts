@@ -8,6 +8,7 @@ export async function createOrder(data: {
   requestedQuantity: string
   requestedUnit: string
   calculatedPrice: string
+  deliveryAddress: string
 }) {
   const client = await pool.connect()
   try {
@@ -16,14 +17,14 @@ export async function createOrder(data: {
       return { error: "Unauthorized" }
     }
 
-    const { productId, requestedQuantity, requestedUnit, calculatedPrice } = data
+    const { productId, requestedQuantity, requestedUnit, calculatedPrice, deliveryAddress } = data
 
     await client.query('BEGIN')
 
     const orderRes = await client.query(
-      `INSERT INTO orders (seller_id, total_amount, status) 
-       VALUES ($1, $2, $3) RETURNING id`,
-      [session.user.id, parseFloat(calculatedPrice), "PENDING"]
+      `INSERT INTO orders (seller_id, total_amount, status, delivery_address) 
+       VALUES ($1, $2, $3, $4) RETURNING id`,
+      [session.user.id, parseFloat(calculatedPrice), "PENDING", deliveryAddress]
     )
     
     const orderId = orderRes.rows[0].id

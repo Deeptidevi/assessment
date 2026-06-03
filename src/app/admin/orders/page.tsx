@@ -3,7 +3,7 @@ import { formatINR } from "@/lib/utils"
 
 export default async function AdminOrdersPage() {
   const res = await query(`
-    SELECT o.id, o.created_at, o.total_amount, o.status, 
+    SELECT o.id, o.created_at, o.total_amount, o.status, o.delivery_address,
            u.name as seller_name, u.email as seller_email,
       COALESCE(
         (
@@ -57,7 +57,16 @@ export default async function AdminOrdersPage() {
                   <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
                     <td className="p-4 font-medium text-gray-900 text-sm">#{order.id.slice(-6).toUpperCase()}</td>
                     <td className="p-4 text-gray-600 text-sm">{new Date(order.created_at).toLocaleDateString()}</td>
-                    <td className="p-4 text-gray-900 text-sm">{order.seller_name} <br/><span className="text-xs text-gray-500">{order.seller_email}</span></td>
+                    <td className="p-4 text-gray-900 text-sm">
+                      <div className="font-medium">{order.seller_name}</div>
+                      <div className="text-xs text-gray-500 mb-2">{order.seller_email}</div>
+                      {order.delivery_address && order.delivery_address !== 'Not provided' && (
+                        <div className="text-xs text-gray-600 bg-gray-100 p-2 rounded max-w-[200px] break-words">
+                          <span className="font-semibold block mb-1">Delivery Address:</span>
+                          {order.delivery_address}
+                        </div>
+                      )}
+                    </td>
                     <td className="p-4 text-gray-600 text-sm">
                       <ul className="space-y-1">
                         {order.items.map((item: any) => (

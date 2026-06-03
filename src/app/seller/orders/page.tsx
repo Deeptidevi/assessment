@@ -5,7 +5,7 @@ import { formatINR } from "@/lib/utils"
 export default async function SellerOrdersPage() {
   const session = await auth()
   const res = await query(`
-    SELECT o.id, o.created_at, o.total_amount, o.status, 
+    SELECT o.id, o.created_at, o.total_amount, o.status, o.delivery_address,
       COALESCE(
         (
           SELECT json_agg(
@@ -56,7 +56,15 @@ export default async function SellerOrdersPage() {
                 orders.map(order => (
                   <tr key={order.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
                     <td className="p-4 font-medium text-gray-900 text-sm">#{order.id.slice(-6).toUpperCase()}</td>
-                    <td className="p-4 text-gray-600 text-sm">{new Date(order.created_at).toLocaleDateString()}</td>
+                    <td className="p-4 text-gray-600 text-sm">
+                      <div>{new Date(order.created_at).toLocaleDateString()}</div>
+                      {order.delivery_address && order.delivery_address !== 'Not provided' && (
+                        <div className="text-xs mt-2 bg-gray-50 p-2 rounded border border-gray-100 max-w-[200px] break-words">
+                          <span className="font-semibold block mb-1">Delivering to:</span>
+                          {order.delivery_address}
+                        </div>
+                      )}
+                    </td>
                     <td className="p-4 text-gray-600 text-sm">
                       <ul className="space-y-1">
                         {order.items.map((item: any) => (

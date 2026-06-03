@@ -16,6 +16,7 @@ export default function OrderForm({ product }: { product: ProductData }) {
   const router = useRouter()
   const [quantity, setQuantity] = useState<string>("1")
   const [unit, setUnit] = useState<string>(product.baseUnit === "GRAM" ? "G" : product.baseUnit === "MILLILITER" ? "ML" : "COUNT")
+  const [deliveryAddress, setDeliveryAddress] = useState("")
   const [isPending, setIsPending] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -47,7 +48,8 @@ export default function OrderForm({ product }: { product: ProductData }) {
         productId: product.id,
         requestedQuantity: quantity,
         requestedUnit: unit,
-        calculatedPrice: calculatedPrice.toString()
+        calculatedPrice: calculatedPrice.toString(),
+        deliveryAddress
       })
       
       if (result?.error) {
@@ -105,6 +107,18 @@ export default function OrderForm({ product }: { product: ProductData }) {
             ))}
           </select>
         </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Delivery Address</label>
+        <textarea
+          required
+          rows={3}
+          value={deliveryAddress}
+          onChange={(e) => setDeliveryAddress(e.target.value)}
+          placeholder="Enter the full delivery address..."
+          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg text-gray-900 resize-none"
+        ></textarea>
       </div>
 
       <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
