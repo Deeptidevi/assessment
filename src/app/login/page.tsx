@@ -18,7 +18,7 @@ export default function LoginPage() {
           <p className="font-medium text-gray-700 mb-2">Test Credentials:</p>
           <ul className="space-y-1">
             <li><span className="inline-block w-16 font-medium">Admin:</span> admin@example.com / admin123</li>
-            <li><span className="inline-block w-16 font-medium">Seller:</span> user@example.com / user123</li>
+            <li><span className="inline-block w-16 font-medium">User:</span> user@example.com / user123</li>
           </ul>
         </div>
       </div>

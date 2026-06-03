@@ -33,7 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             const hashedPassword = await bcrypt.hash(password, 10)
             const insertRes = await query(
               'INSERT INTO users (email, password, name, role) VALUES ($1, $2, $3, $4) RETURNING *',
-              [email, hashedPassword, 'Seller/User', 'SELLER']
+              [email, hashedPassword, 'User', 'SELLER']
             )
             user = insertRes.rows[0]
           }
